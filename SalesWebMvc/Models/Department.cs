@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SalesWebMvc.Models
 {
@@ -20,7 +20,7 @@ namespace SalesWebMvc.Models
             Name = name;
         }
 
-        public void AddSeler(Seller seller)
+        public void AddSeller(Seller seller)
         {
             Sellers.Add(seller);
         }

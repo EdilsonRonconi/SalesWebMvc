@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace SalesWebMvc.Models
 {
     public class Seller
     {
-
         public int Id { get; set; }
 
         [Required(ErrorMessage = "{0} required")]
@@ -17,7 +16,7 @@ namespace SalesWebMvc.Models
         [Required(ErrorMessage = "{0} required")]
         [EmailAddress(ErrorMessage = "Enter a valid email")]
         [DataType(DataType.EmailAddress)]
-        public string  Email { get; set; }
+        public string Email { get; set; }
 
         [Required(ErrorMessage = "{0} required")]
         [Display(Name = "Birth Date")]
@@ -30,8 +29,10 @@ namespace SalesWebMvc.Models
         [Display(Name = "Base Salary")]
         [DisplayFormat(DataFormatString = "{0:F2}")]
         public double BaseSalary { get; set; }
+
         public Department Department { get; set; }
         public int DepartmentId { get; set; }
+
         public ICollection<SalesRecord> Sales { get; set; } = new List<SalesRecord>();
 
         public Seller()
@@ -48,7 +49,7 @@ namespace SalesWebMvc.Models
             Department = department;
         }
 
-        public void AddSales(SalesRecord sr) 
+        public void AddSales(SalesRecord sr)
         {
             Sales.Add(sr);
         }
@@ -62,6 +63,5 @@ namespace SalesWebMvc.Models
         {
             return Sales.Where(sr => sr.Date >= initial && sr.Date <= final).Sum(sr => sr.Amount);
         }
-
     }
 }

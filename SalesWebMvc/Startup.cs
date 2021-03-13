@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Globalization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,12 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Globalization;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SalesWebMvc.Models;
 using SalesWebMvc.Data;
 using SalesWebMvc.Services;
 
@@ -39,15 +40,14 @@ namespace SalesWebMvc
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            //    services.AddDbContext<SalesWebMvcContext>(options =>
-            //            options.UseSqlServer(Configuration.GetConnectionString("SalesWebMvcContext")));
             services.AddDbContext<SalesWebMvcContext>(options =>
-                    options.UseMySql(Configuration.GetConnectionString("SalesWebMvcContext"),
-                    builder => builder.MigrationsAssembly("SalesWebMvc")));
+                    options.UseMySql(Configuration.GetConnectionString("SalesWebMvcContext"), builder =>
+                        builder.MigrationsAssembly("SalesWebMvc")));
 
-            services.AddScoped<SeedingService>(); //ER. 
-            services.AddScoped<SellerService>(); //ER. 
-            services.AddScoped<DepartmentService>(); //ER. 
+            services.AddScoped<SeedingService>();
+            services.AddScoped<SellerService>();
+            services.AddScoped<DepartmentService>();
+            services.AddScoped<SalesRecordService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,7 +66,7 @@ namespace SalesWebMvc
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                seedingService.Seed(); //ER.
+                seedingService.Seed();
             }
             else
             {

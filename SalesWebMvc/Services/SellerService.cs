@@ -1,6 +1,4 @@
-﻿
-using SalesWebMvc.Data;
-using SalesWebMvc.Models;
+﻿using SalesWebMvc.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +25,7 @@ namespace SalesWebMvc.Services
         public async Task InsertAsync(Seller obj)
         {
             _context.Add(obj);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Seller> FindByIdAsync(int id)
@@ -35,7 +33,7 @@ namespace SalesWebMvc.Services
             return await _context.Seller.Include(obj => obj.Department).FirstOrDefaultAsync(obj => obj.Id == id);
         }
 
-        public async Task RemoveAsync (int id)
+        public async Task RemoveAsync(int id)
         {
             try
             {
@@ -45,14 +43,13 @@ namespace SalesWebMvc.Services
             }
             catch (DbUpdateException e)
             {
-                throw new IntegrityException(e.Message + " Can't delete seller because he/she has sales.");
+                throw new IntegrityException("Can't delete seller because he/she has sales");
             }
         }
 
         public async Task UpdateAsync(Seller obj)
         {
             bool hasAny = await _context.Seller.AnyAsync(x => x.Id == obj.Id);
-
             if (!hasAny)
             {
                 throw new NotFoundException("Id not found");
@@ -66,7 +63,6 @@ namespace SalesWebMvc.Services
             {
                 throw new DbConcurrencyException(e.Message);
             }
-
         }
     }
 }
